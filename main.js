@@ -1,24 +1,45 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+function dropBall() {
+  const box = document.querySelector(".box");
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+  // Create a new ball element
+  const ball = document.createElement("div");
+  ball.classList.add("ball");
 
-setupCounter(document.querySelector('#counter'))
+  // Set a random x-coordinate within the box width
+  const x = Math.random() * (box.offsetWidth - 20);
+
+  // Set the initial position of the ball
+  ball.style.left = `${x}px`;
+  ball.style.top = "0px";
+
+  // Append the ball to the box
+  box.appendChild(ball);
+
+  // Animate the ball falling
+  animateBall(ball);
+}
+
+function animateBall(ball) {
+  let posY = 0;
+  const fallSpeed = 2;
+
+  function fall() {
+    posY += fallSpeed;
+    ball.style.top = `${posY}px`;
+
+    // Check if the ball reaches the bottom of the box
+    if (posY + ball.offsetHeight < 600) {
+      requestAnimationFrame(fall);
+    }
+  }
+
+  // Start the animation
+  fall();
+}
+// dropBall();
+
+window.addEventListener("keydown", function (event) {
+  if (event.code === "Space") {
+    dropBall();
+  }
+});
